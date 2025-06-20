@@ -21,7 +21,7 @@ This panel is rendered from *Jira* wiki syntax.
 RendererManager rendererManager = ComponentAccessor.getComponent(RendererManager)
 String htmlContent = rendererManager.getRendererForType("atlassian-wiki-renderer").render(wikiText, null)
 
-return """
+writer.write """
 <div class='aui-page-panel'>
   <section class='aui-page-panel-content'>
     ${htmlContent}
