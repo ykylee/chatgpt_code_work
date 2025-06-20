@@ -1,25 +1,25 @@
 import com.atlassian.sal.api.component.ComponentLocator
 import com.atlassian.webresource.api.assembler.PageBuilderService
-import org.commonmark.parser.Parser
-import org.commonmark.renderer.html.HtmlRenderer
+
+import com.atlassian.jira.component.ComponentAccessor
+import com.atlassian.jira.issue.fields.renderer.RendererManager
 
 // Require Atlassian AUI resources so the panel uses the default styling
 PageBuilderService pageBuilderService = ComponentLocator.getComponent(PageBuilderService)
 pageBuilderService.assembler().resources().requireWebResource("com.atlassian.auiplugin:aui-css")
 
-// Markdown text to display in the panel
-String markdownText = """
-# Sample Web Panel
+// Wiki markup text to display in the panel
+String wikiText = """
+h1. Sample Web Panel
 
-This panel is rendered from **Markdown** using the CommonMark parser.
+This panel is rendered from *Jira* wiki syntax.
 
 * Item 1
 * Item 2
 """
 
-Parser parser = Parser.builder().build()
-HtmlRenderer renderer = HtmlRenderer.builder().build()
-String htmlContent = renderer.render(parser.parse(markdownText))
+RendererManager rendererManager = ComponentAccessor.getComponent(RendererManager)
+String htmlContent = rendererManager.getRendererForType("atlassian-wiki-renderer").render(wikiText, null)
 
 return """
 <div class='aui-page-panel'>
